@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery Tacky</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="core/jquery.tacky.js"></script>
+  <link rel="stylesheet" href="demo/demo.css">
+
+  <script>
+    $(function() {
+      $('nav').tacky({
+        parentSelector: 'li'
+      })
+    })
+  </script>
+</head>
+<body>
+  <nav>
+    <ul class="links">
+      <li>
+        <a href="#first">First</a>
+      </li>
+      <li>
+        <a href="#second">Second</a>
+      </li>
+      <li>
+        <a href="#third">Third</a>
+      </li>
+      <li>
+        <a href="#fourth">Fourth</a>
+      </li>
+    </ul>
+  </nav>
+
+  <ul class="panes">
+    <li id="first">This is the first pane</li>
+    <li id="second">This happens to be the second one</li>
+    <li id="third">Well then, this would have to be third</li>
+    <li id="fourth">A fourth of course</li>
+  </ul>
+</body>
+</html>
