@@ -74,19 +74,19 @@
       scroll_nav_position = $(document).scrollTop() + @nav_height
       scroll_mid_position = scroll_position + (@window_height / 2)
       
-      if scroll_position > @nav_position
+      if scroll_position >= @nav_position
         @toggleNav(true)
 
-        if scroll_nav_position > @positions[0]
+        if scroll_nav_position >= @positions[0]
           scroll_total = @document_height - @window_height
           scroll_percent = scroll_position / scroll_total
 
-          if scroll_percent > .99
+          if scroll_percent >= .99
             scroll_mid_position += @window_height
 
           active_i = null
           for pos, i in @positions
-            if scroll_mid_position > pos
+            if scroll_mid_position >= pos
               active_i = i
 
           @setActive(active_i)
