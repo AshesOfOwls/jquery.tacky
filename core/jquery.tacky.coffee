@@ -44,7 +44,7 @@
 
     createEvents: ->
       $(document).on "scroll.tacky", => @scroll()
-      $(window).on "resize.tacky", => @scroll();
+      $(window).on "resize.tacky", => @setGlobals(); @scroll();
 
       nav_height = @nav_height
       scroll_speed = @options.scrollSpeed

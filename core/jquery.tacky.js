@@ -42,6 +42,7 @@
           return _this.scroll();
         });
         $(window).on("resize.tacky", function() {
+          _this.setGlobals();
           return _this.scroll();
         });
         nav_height = this.nav_height;
