@@ -44,7 +44,7 @@
         }
       },
       createEvents: function() {
-        var $toggle_button, nav_height, open_class, scroll_speed,
+        var $toggle_button, nav_height, openClass, scroll_speed, tackedClass,
           _this = this;
         $(document).on("scroll.tacky", function() {
           return _this.scroll();
@@ -66,13 +66,19 @@
             scrollTop: position
           }, scroll_speed);
         });
-        open_class = this.options.openClass;
+        openClass = this.options.openClass;
+        tackedClass = this.options.tackedClass;
         $toggle_button = this.$nav.find("." + this.options.toggleClass);
         return $toggle_button.off('click.tacky').on('click.tacky', function() {
-          if (_this.$nav.hasClass(open_class)) {
-            return _this.$nav.removeClass(open_class);
+          if (_this.$nav.hasClass(openClass)) {
+            return _this.$nav.removeClass(openClass);
           } else {
-            return _this.$nav.addClass(open_class);
+            _this.$nav.addClass(openClass);
+            if (!_this.$nav.hasClass(tackedClass)) {
+              return $("html, body").animate({
+                scrollTop: _this.nav_position
+              }, scroll_speed);
+            }
           }
         });
       },

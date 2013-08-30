@@ -64,13 +64,18 @@
         position = $target.offset().top - nav_height
         $("html, body").animate({scrollTop: position}, scroll_speed)
 
-      open_class = @options.openClass
+      openClass = @options.openClass
+      tackedClass = @options.tackedClass
       $toggle_button = @$nav.find("." + @options.toggleClass)
       $toggle_button.off('click.tacky').on 'click.tacky', =>
-        if @$nav.hasClass(open_class)
-          @$nav.removeClass(open_class)
+        if @$nav.hasClass(openClass)
+          @$nav.removeClass(openClass)
         else
-          @$nav.addClass(open_class)
+          @$nav.addClass(openClass)
+
+          unless @$nav.hasClass(tackedClass)
+            $("html, body").animate({scrollTop: @nav_position}, scroll_speed)
+
 
     getTargets: ->
       item_selector = @options.itemSelector
