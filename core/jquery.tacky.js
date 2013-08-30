@@ -28,11 +28,17 @@
         return this.getPositions();
       },
       setGlobals: function() {
+        var tackedClass;
         this.document_height = $(document).height();
         this.window_height = $(window).height();
         this.nav_height = this.$nav.outerHeight();
-        if (!this.$nav.hasClass(this.options.tackedClass)) {
+        tackedClass = this.options.tackedClass;
+        if (!this.$nav.hasClass(tackedClass)) {
           return this.nav_position = this.$nav.offset().top;
+        } else {
+          this.$nav.removeClass(tackedClass);
+          this.nav_position = this.$nav.offset().top;
+          return this.$nav.addClass(tackedClass);
         }
       },
       createEvents: function() {
@@ -43,6 +49,7 @@
         });
         $(window).on("resize.tacky", function() {
           _this.setGlobals();
+          _this.getPositions();
           return _this.scroll();
         });
         nav_height = this.nav_height;
@@ -52,7 +59,7 @@
           evt.preventDefault();
           target_id = $(this).attr('href');
           $target = $(target_id);
-          position = $target.offset().top - nav_height + 1;
+          position = $target.offset().top - nav_height;
           return $("html, body").animate({
             scrollTop: position
           }, scroll_speed);

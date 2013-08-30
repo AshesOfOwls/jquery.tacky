@@ -39,12 +39,17 @@
       @window_height = $(window).height()
       @nav_height = @$nav.outerHeight()
 
-      if !@$nav.hasClass(@options.tackedClass)
+      tackedClass = @options.tackedClass
+      if !@$nav.hasClass(tackedClass)
         @nav_position = @$nav.offset().top
+      else
+        @$nav.removeClass(tackedClass)
+        @nav_position = @$nav.offset().top
+        @$nav.addClass(tackedClass)
 
     createEvents: ->
       $(document).on "scroll.tacky", => @scroll()
-      $(window).on "resize.tacky", => @setGlobals(); @scroll();
+      $(window).on "resize.tacky", => @setGlobals(); @getPositions(); @scroll();
 
       nav_height = @nav_height
       scroll_speed = @options.scrollSpeed
@@ -54,7 +59,7 @@
         target_id = $(this).attr('href')
         $target = $(target_id)
 
-        position = $target.offset().top - nav_height + 1
+        position = $target.offset().top - nav_height
         $("html, body").animate({scrollTop: position}, scroll_speed)
 
     getTargets: ->
