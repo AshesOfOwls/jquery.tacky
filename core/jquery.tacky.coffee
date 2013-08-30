@@ -17,6 +17,8 @@
     parentSelector: null
     activeClass: 'active'
     scrollSpeed: 500
+    toggleClass: 'toggle'
+    openClass: 'open'
 
   Plugin = (element, options) ->
     @options = $.extend({}, defaults, options)
@@ -61,6 +63,14 @@
 
         position = $target.offset().top - nav_height
         $("html, body").animate({scrollTop: position}, scroll_speed)
+
+      open_class = @options.openClass
+      $toggle_button = @$nav.find("." + @options.toggleClass)
+      $toggle_button.off('click.tacky').on 'click.tacky', =>
+        if @$nav.hasClass(open_class)
+          @$nav.removeClass(open_class)
+        else
+          @$nav.addClass(open_class)
 
     getTargets: ->
       item_selector = @options.itemSelector
