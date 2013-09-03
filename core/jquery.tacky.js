@@ -64,7 +64,7 @@
           target_id = $(this).attr('href');
           $target = $(target_id);
           position = $target.offset().top - nav_height;
-          return $("html, body").animate({
+          return $("html, body").stop().animate({
             scrollTop: position
           }, scroll_speed, scroll_easing);
         });
@@ -77,7 +77,7 @@
           } else {
             _this.$nav.addClass(openClass);
             if (!_this.$nav.hasClass(tackedClass)) {
-              return $("html, body").animate({
+              return $("html, body").stop().animate({
                 scrollTop: _this.nav_position
               }, scroll_speed, scroll_easing);
             }

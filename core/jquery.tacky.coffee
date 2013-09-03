@@ -64,7 +64,7 @@
         $target = $(target_id)
 
         position = $target.offset().top - nav_height
-        $("html, body").animate({scrollTop: position}, scroll_speed, scroll_easing)
+        $("html, body").stop().animate({scrollTop: position}, scroll_speed, scroll_easing)
 
       openClass = @options.openClass
       tackedClass = @options.tackedClass
@@ -76,7 +76,7 @@
           @$nav.addClass(openClass)
 
           unless @$nav.hasClass(tackedClass)
-            $("html, body").animate({scrollTop: @nav_position}, scroll_speed, scroll_easing)
+            $("html, body").stop().animate({scrollTop: @nav_position}, scroll_speed, scroll_easing)
 
 
     getTargets: ->
