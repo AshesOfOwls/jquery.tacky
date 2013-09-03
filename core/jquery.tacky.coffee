@@ -16,10 +16,10 @@
     itemSelector: 'a'
     parentSelector: null
     activeClass: 'active'
-    scrollSpeed: 500
     toggleClass: 'toggle'
     openClass: 'open'
-    scrollEasing: 'easeInOutQuad'
+    scrollSpeed: 500
+    scrollEasing: ''
 
   Plugin = (element, options) ->
     @options = $.extend({}, defaults, options)
@@ -76,7 +76,7 @@
           @$nav.addClass(openClass)
 
           unless @$nav.hasClass(tackedClass)
-            $("html, body").animate({scrollTop: @nav_position}, scroll_speed)
+            $("html, body").animate({scrollTop: @nav_position}, scroll_speed, scroll_easing)
 
 
     getTargets: ->

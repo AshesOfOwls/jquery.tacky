@@ -9,9 +9,10 @@
       itemSelector: 'a',
       parentSelector: null,
       activeClass: 'active',
-      scrollSpeed: 500,
       toggleClass: 'toggle',
-      openClass: 'open'
+      openClass: 'open',
+      scrollSpeed: 500,
+      scrollEasing: ''
     };
     Plugin = function(element, options) {
       var _this = this;
@@ -44,7 +45,7 @@
         }
       },
       createEvents: function() {
-        var $toggle_button, nav_height, openClass, scroll_speed, tackedClass,
+        var $toggle_button, nav_height, openClass, scroll_easing, scroll_speed, tackedClass,
           _this = this;
         $(document).on("scroll.tacky", function() {
           return _this.scroll();
@@ -56,6 +57,7 @@
         });
         nav_height = this.nav_height;
         scroll_speed = this.options.scrollSpeed;
+        scroll_easing = this.options.scrollEasing;
         this.links.on("click", function(evt) {
           var $target, position, target_id;
           evt.preventDefault();
@@ -64,7 +66,7 @@
           position = $target.offset().top - nav_height;
           return $("html, body").animate({
             scrollTop: position
-          }, scroll_speed);
+          }, scroll_speed, scroll_easing);
         });
         openClass = this.options.openClass;
         tackedClass = this.options.tackedClass;
@@ -77,7 +79,7 @@
             if (!_this.$nav.hasClass(tackedClass)) {
               return $("html, body").animate({
                 scrollTop: _this.nav_position
-              }, scroll_speed);
+              }, scroll_speed, scroll_easing);
             }
           }
         });
