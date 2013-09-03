@@ -19,6 +19,7 @@
     scrollSpeed: 500
     toggleClass: 'toggle'
     openClass: 'open'
+    scrollEasing: 'easeInOutQuad'
 
   Plugin = (element, options) ->
     @options = $.extend({}, defaults, options)
@@ -55,6 +56,7 @@
 
       nav_height = @nav_height
       scroll_speed = @options.scrollSpeed
+      scroll_easing = @options.scrollEasing
       @links.on "click", (evt) ->
         evt.preventDefault()
 
@@ -62,7 +64,7 @@
         $target = $(target_id)
 
         position = $target.offset().top - nav_height
-        $("html, body").animate({scrollTop: position}, scroll_speed)
+        $("html, body").animate({scrollTop: position}, scroll_speed, scroll_easing)
 
       openClass = @options.openClass
       tackedClass = @options.tackedClass
