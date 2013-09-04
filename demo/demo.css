@@ -1,12 +1,17 @@
 html, body {
+  background: rgb(136, 214, 238);
   height: 100%;
+  font-family: Helvetica, Arial, Verdana, sans-serif;
   min-height: 100%;
   margin: 0;
   padding: 0;
 }
 
+/* ------------------------ */
+/* ------ Navigation ------ */
+/* ------------------------ */
 nav {
-  background: #333;
+  background: rgb(79, 104, 121);
   color: #FFF;
   position: absolute;
   top: 50px;
@@ -18,14 +23,29 @@ nav.tacked {
   top: 0;
 }
 
-nav li {
-  display: inline-block;
-  padding: 0 30px;
+nav ul {
+  margin: 0;
+  padding: 0;
 }
 
-nav li.active {
-  background: blue;
+nav li {
+  display: inline-block;
+  padding: 20px 30px;
 }
+
+nav li.active, nav li:hover {
+  background: rgba(159, 182, 223, .5);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* ------------------------ */
+/* -------- Panes --------- */
+/* ------------------------ */
 
 ul.panes {
   height: 100%;
@@ -34,23 +54,23 @@ ul.panes {
 }
 
 ul.panes li {
+  background: rgba(0,0,0,.1);
+  border-top: 6px solid rgba(0,0,0,0.3);
+  padding: 20px;
   display: block;
   height: 200%;
 }
 
-ul.panes li#first {
-  background: green;
-}
-
-ul.panes li#second {
-  background: orange;
-}
-
-ul.panes li#third {
-  background: red;
+ul.panes li:hover {
+  background: transparent;
 }
 
 ul.panes li#fourth {
-  background: yellow;
   height: 200px;
+}
+
+ul.panes li h3 {
+  color: rgba(0,0,0,0.8);
+  font-size: 60px;
+  text-align: center;
 }

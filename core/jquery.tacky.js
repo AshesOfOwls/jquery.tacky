@@ -45,7 +45,7 @@
         }
       },
       createEvents: function() {
-        var $toggle_button, nav_height, openClass, scroll_easing, scroll_speed, tackedClass,
+        var $nav, $toggle_button, nav_height, openClass, scroll_easing, scroll_speed, self, tackedClass,
           _this = this;
         $(document).on("scroll.tacky", function() {
           return _this.scroll();
@@ -55,20 +55,29 @@
           _this.getPositions();
           return _this.scroll();
         });
+        openClass = this.options.openClass;
         nav_height = this.nav_height;
         scroll_speed = this.options.scrollSpeed;
         scroll_easing = this.options.scrollEasing;
+        $nav = this.$nav;
+        self = this;
         this.links.on("click", function(evt) {
           var $target, position, target_id;
           evt.preventDefault();
           target_id = $(this).attr('href');
           $target = $(target_id);
           position = $target.offset().top - nav_height;
-          return $("html, body").stop().animate({
-            scrollTop: position
-          }, scroll_speed, scroll_easing);
+          if ($nav.hasClass(openClass)) {
+            $("html, body").stop().css({
+              scrollTop: position
+            });
+            return self.toggleNav(false);
+          } else {
+            return $("html, body").stop().animate({
+              scrollTop: position
+            }, scroll_speed, scroll_easing);
+          }
         });
-        openClass = this.options.openClass;
         tackedClass = this.options.tackedClass;
         $toggle_button = this.$nav.find("." + this.options.toggleClass);
         return $toggle_button.off('click.tacky').on('click.tacky', function() {

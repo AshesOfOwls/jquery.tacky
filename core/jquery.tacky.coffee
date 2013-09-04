@@ -53,10 +53,13 @@
     createEvents: ->
       $(document).on "scroll.tacky", => @scroll()
       $(window).on "resize.tacky", => @setGlobals(); @getPositions(); @scroll();
+      openClass = @options.openClass
 
       nav_height = @nav_height
       scroll_speed = @options.scrollSpeed
       scroll_easing = @options.scrollEasing
+      $nav = @$nav
+      self = @
       @links.on "click", (evt) ->
         evt.preventDefault()
 
@@ -64,9 +67,13 @@
         $target = $(target_id)
 
         position = $target.offset().top - nav_height
-        $("html, body").stop().animate({scrollTop: position}, scroll_speed, scroll_easing)
 
-      openClass = @options.openClass
+        if $nav.hasClass(openClass)
+          $("html, body").stop().css({scrollTop: position})
+          self.toggleNav(false)
+        else
+          $("html, body").stop().animate({scrollTop: position}, scroll_speed, scroll_easing)
+
       tackedClass = @options.tackedClass
       $toggle_button = @$nav.find("." + @options.toggleClass)
       $toggle_button.off('click.tacky').on 'click.tacky', =>
