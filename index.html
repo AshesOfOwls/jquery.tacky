@@ -3,10 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>jQuery Tacky</title>
+
+  <!-- jQuery Assets -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-  <script src="core/jquery.tacky.js"></script>
+
+  <!-- Other Assets -->
+  <link rel="stylesheet" href="demo/vendor/font-awesome/font-awesome.min.css">
+  <link rel="stylesheet" href="demo/vendor/font-awesome/font-awesome-ie7.min.css">
+
+  <!-- Demo Assets -->
   <link rel="stylesheet" href="demo/demo.css">
+
+  <!-- Core Tacky -->
+  <script src="core/jquery.tacky.js"></script>
 
   <script>
     $(function() {
@@ -17,23 +27,65 @@
   </script>
 </head>
 <body>
+  <h1>jQuery.Tacky</h1>
+
   <nav>
     <ul>
       <li class="toggle">
-        Toggle it all
+        <i class="icon-align-justify"></i>
       </li>
-      <li><a href="#first">First</a></li>
-      <li><a href="#second">Second</a></li>
-      <li><a href="#third">Third</a></li>
-      <li><a href="#fourth">Fourth</a></li>
+      <li>
+        <a href="#first">
+          First Pane
+          <small>href='#first'</small>
+        </a>
+      </li>
+      <li>
+        <a href="#second">
+          Second Pane
+          <small>href='#second'</small>
+        </a>
+      </li>
+      <li>
+        <a href="#third">
+          Third Pane
+          <small>href='#third'</small>
+        </a>
+      </li>
+      <li>
+        <a href="#fourth">
+          Fourth Pane
+          <small>href='#fourth'</small>
+        </a>
+      </li>
     </ul>
   </nav>
 
   <ul class="panes">
-    <li id="first"><h3>id="first"</h3></li>
-    <li id="second"><h3>id="second"</h3></li>
-    <li id="third"><h3>id="third"</h3></li>
-    <li id="fourth"><h3>id="fourth"</h3></li>
+    <li id="first">
+      <h3>
+        First Pane
+        <small>id="first"</small>
+      </h3>
+    </li>
+    <li id="second">
+      <h3>
+        Second Pane
+        <small>id="second"</small>
+      </h3>
+    </li>
+    <li id="third">
+      <h3>
+        Third Pane
+        <small>id="third"</small>
+      </h3>
+    </li>
+    <li id="fourth">
+      <h3>
+        Fourth Pane
+        <small>id="fourth"</small>
+      </h3>
+    </li>
   </ul>
 </body>
 </html>

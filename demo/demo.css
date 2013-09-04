@@ -7,14 +7,29 @@ html, body {
   padding: 0;
 }
 
-/* ------------------------ */
-/* ------ Navigation ------ */
-/* ------------------------ */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 34px;
+  font-weight: normal;
+  padding: 10px 30px;
+}
+
+small {
+  display: block;
+}
+
+/* ------------------------------- */
+/* ------ Normal Navigation ------ */
+/* ------------------------------- */
 nav {
   background: rgb(79, 104, 121);
   color: #FFF;
+  height: 70px;
   position: absolute;
-  top: 50px;
   width: 100%;
 }
 
@@ -30,18 +45,59 @@ nav ul {
 
 nav li {
   display: inline-block;
-  padding: 20px 30px;
+  text-align: center;
 }
 
-nav li.active, nav li:hover {
+nav li.active, nav li:hover:not(.toggle) {
   background: rgba(159, 182, 223, .5);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+nav li.toggle {
+  cursor: pointer;
+  display: none;
+  font-size: 31px;
+  padding: 20px 30px;
 }
 
+nav li.toggle:hover {
+  color: #CCC;
+}
+
+nav li a {
+  display: block;
+  padding: 20px 30px;
+}
+
+nav li a small {
+  font-size: 10px;
+  font-family: verdana;
+}
+
+
+/* ------------------------------- */
+/* ------ Mobile Navigation ------ */
+/* ------------------------------- */
+
+@media(max-width: 699px) {
+  nav {
+    height: 70px;
+    transition: 1s height;
+    overflow: hidden;
+  }
+
+  nav.open {
+    height: 100%;
+  }
+
+  nav li {
+    display: block;
+  }
+
+  nav li.toggle {
+    clear: both;
+    display: block;
+  }
+}
 
 /* ------------------------ */
 /* -------- Panes --------- */
@@ -58,7 +114,7 @@ ul.panes li {
   border-top: 6px solid rgba(0,0,0,0.3);
   padding: 20px;
   display: block;
-  height: 200%;
+  height: 80%;
 }
 
 ul.panes li:hover {

@@ -5,9 +5,9 @@
     var Plugin, defaults, pluginName;
     pluginName = 'tacky';
     defaults = {
-      tackedClass: 'tacked',
       itemSelector: 'a',
       parentSelector: null,
+      tackedClass: 'tacked',
       activeClass: 'active',
       toggleClass: 'toggle',
       openClass: 'open',
@@ -18,6 +18,7 @@
       var _this = this;
       this.options = $.extend({}, defaults, options);
       this.$nav = $(element);
+      this.$toggle_button = this.$nav.find("." + this.options.toggleClass);
       this.init();
       return setTimeout((function() {
         return _this.init();
@@ -25,78 +26,29 @@
     };
     Plugin.prototype = {
       init: function() {
-        this.setGlobals();
+        this.getDOMProperties();
         this.getTargets();
-        this.createEvents();
-        return this.getPositions();
+        this.getPositions();
+        return this.createEvents();
       },
-      setGlobals: function() {
+      getDOMProperties: function() {
         var tackedClass;
         this.document_height = $(document).height();
         this.window_height = $(window).height();
         this.nav_height = this.$nav.outerHeight();
-        tackedClass = this.options.tackedClass;
-        if (!this.$nav.hasClass(tackedClass)) {
-          return this.nav_position = this.$nav.offset().top;
-        } else {
-          this.$nav.removeClass(tackedClass);
-          this.nav_position = this.$nav.offset().top;
-          return this.$nav.addClass(tackedClass);
+        if (!(this.nav_position >= 0)) {
+          tackedClass = this.options.tackedClass;
+          if (!this.$nav.hasClass(tackedClass)) {
+            return this.nav_position = this.$nav.offset().top;
+          } else {
+            this.$nav.removeClass(tackedClass);
+            this.nav_position = this.$nav.offset().top;
+            return this.$nav.addClass(tackedClass);
+          }
         }
       },
-      createEvents: function() {
-        var $nav, $toggle_button, nav_height, openClass, scroll_easing, scroll_speed, self, tackedClass,
-          _this = this;
-        $(document).on("scroll.tacky", function() {
-          return _this.scroll();
-        });
-        $(window).on("resize.tacky", function() {
-          _this.setGlobals();
-          _this.getPositions();
-          return _this.scroll();
-        });
-        openClass = this.options.openClass;
-        nav_height = this.nav_height;
-        scroll_speed = this.options.scrollSpeed;
-        scroll_easing = this.options.scrollEasing;
-        $nav = this.$nav;
-        self = this;
-        this.links.on("click", function(evt) {
-          var $target, position, target_id;
-          evt.preventDefault();
-          target_id = $(this).attr('href');
-          $target = $(target_id);
-          position = $target.offset().top - nav_height;
-          if ($nav.hasClass(openClass)) {
-            $("html, body").stop().css({
-              scrollTop: position
-            });
-            return self.toggleNav(false);
-          } else {
-            return $("html, body").stop().animate({
-              scrollTop: position
-            }, scroll_speed, scroll_easing);
-          }
-        });
-        tackedClass = this.options.tackedClass;
-        $toggle_button = this.$nav.find("." + this.options.toggleClass);
-        return $toggle_button.off('click.tacky').on('click.tacky', function() {
-          if (_this.$nav.hasClass(openClass)) {
-            return _this.$nav.removeClass(openClass);
-          } else {
-            _this.$nav.addClass(openClass);
-            if (!_this.$nav.hasClass(tackedClass)) {
-              return $("html, body").stop().animate({
-                scrollTop: _this.nav_position
-              }, scroll_speed, scroll_easing);
-            }
-          }
-        });
-      },
       getTargets: function() {
-        var item_selector;
-        item_selector = this.options.itemSelector;
-        this.links = this.$nav.find(item_selector);
+        this.links = this.$nav.find(this.options.itemSelector);
         return this.targets = this.links.map(function() {
           return $(this).attr('href');
         });
@@ -105,10 +57,58 @@
         var _this = this;
         this.positions = [];
         return this.targets.each(function(i, target) {
-          var position;
-          position = $(target).offset().top;
-          return _this.positions.push(position);
+          return _this.positions.push($(target).offset().top);
         });
+      },
+      createEvents: function() {
+        var self,
+          _this = this;
+        $(document).on("scroll.tacky", function() {
+          return _this.scroll();
+        });
+        $(window).on("resize.tacky", function() {
+          _this.getDOMProperties();
+          _this.getPositions();
+          return _this.scroll();
+        });
+        self = this;
+        this.links.off('click.tacky').on("click.tacky", function(evt, i) {
+          evt.preventDefault();
+          return self.scrollTo($(this).attr('href'));
+        });
+        return this.$toggle_button.off('click.tacky').on('click.tacky', function() {
+          return _this.toggleOpen();
+        });
+      },
+      toggleOpen: function() {
+        var openClass, tackedClass;
+        openClass = this.options.openClass;
+        tackedClass = this.options.tackedClass;
+        if (this.$nav.hasClass(openClass)) {
+          return this.$nav.removeClass(openClass);
+        } else {
+          this.$nav.addClass(openClass);
+          if (!this.$nav.hasClass(tackedClass)) {
+            return $("html, body").stop().animate({
+              scrollTop: this.nav_position
+            }, this.options.scroll_speed, this.options.scroll_easing);
+          }
+        }
+      },
+      scrollTo: function(target_id) {
+        var position, position_index;
+        position_index = $.inArray(target_id, this.targets);
+        position = this.positions[position_index];
+        if (this.$nav.hasClass(this.options.openClass)) {
+          $("html, body").stop().animate({
+            scrollTop: position
+          }, 0);
+          return this.toggleOpen();
+        } else {
+          return $("html, body").stop().animate({
+            scrollTop: position
+          }, this.options.scroll_speed, this.options.scroll_easing);
+        }
       },
       scroll: function() {
         var active_i, i, pos, scroll_mid_position, scroll_nav_position, scroll_percent, scroll_position, scroll_total, _i, _len, _ref;
@@ -131,9 +131,9 @@
                 active_i = i;
               }
             }
-            return this.setActive(active_i);
+            return this.setActiveMenuItem(active_i);
           } else {
-            return this.clearActive();
+            return this.clearActiveMenuItem();
           }
         } else {
           return this.toggleNav(false);
@@ -144,19 +144,19 @@
           return this.$nav.addClass(this.options.tackedClass);
         } else {
           this.$nav.removeClass(this.options.tackedClass);
-          return this.clearActive();
+          return this.clearActiveMenuItem();
         }
       },
-      setActive: function(i) {
+      setActiveMenuItem: function(i) {
         var $active_item, active_class;
-        this.clearActive();
+        this.clearActiveMenuItem();
         if (i >= 0) {
           active_class = this.options.activeClass;
           $active_item = this.links.eq(i);
           return $active_item.parent().addClass(active_class);
         }
       },
-      clearActive: function() {
+      clearActiveMenuItem: function() {
         var active_class;
         active_class = this.options.activeClass;
         return this.$nav.find('.' + active_class).removeClass(active_class);
