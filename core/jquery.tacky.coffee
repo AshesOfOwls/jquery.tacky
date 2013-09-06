@@ -101,7 +101,7 @@
 
     scrollTo: (target_id) ->
       position_index = $.inArray(target_id, @targets)
-      position = @positions[position_index]
+      position = @positions[position_index] - @nav_height
 
       if @$nav.hasClass(@options.openClass)
         $("html, body").stop().animate({scrollTop: position}, 0)

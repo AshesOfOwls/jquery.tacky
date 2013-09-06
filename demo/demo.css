@@ -38,6 +38,10 @@ nav.tacked {
   top: 0;
 }
 
+nav .toggle {
+  display: none;
+}
+
 nav ul {
   margin: 0;
   padding: 0;
@@ -50,17 +54,6 @@ nav li {
 
 nav li.active, nav li:hover:not(.toggle) {
   background: rgba(159, 182, 223, .5);
-}
-
-nav li.toggle {
-  cursor: pointer;
-  display: none;
-  font-size: 31px;
-  padding: 20px 30px;
-}
-
-nav li.toggle:hover {
-  color: #CCC;
 }
 
 nav li a {
@@ -81,7 +74,7 @@ nav li a small {
 @media(max-width: 699px) {
   nav {
     height: 70px;
-    transition: 1s height;
+    transition: .25s height;
     overflow: hidden;
   }
 
@@ -89,12 +82,23 @@ nav li a small {
     height: 100%;
   }
 
-  nav li {
+  nav .toggle {
+    cursor: pointer;
     display: block;
+    float: right;
+    font-size: 31px;
+    padding: 20px 30px;
   }
 
-  nav li.toggle {
-    clear: both;
+  nav .toggle:hover {
+    color: #CCC;
+  }
+
+  nav ul {
+    margin-top: 70px;
+  }
+
+  nav li {
     display: block;
   }
 }

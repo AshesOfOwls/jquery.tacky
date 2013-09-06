@@ -98,7 +98,7 @@
       scrollTo: function(target_id) {
         var position, position_index;
         position_index = $.inArray(target_id, this.targets);
-        position = this.positions[position_index];
+        position = this.positions[position_index] - this.nav_height;
         if (this.$nav.hasClass(this.options.openClass)) {
           $("html, body").stop().animate({
             scrollTop: position
