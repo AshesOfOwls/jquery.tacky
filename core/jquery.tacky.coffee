@@ -23,6 +23,8 @@
     scrollSpeed: 500
     scrollEasing: ''
 
+    closeMenuSize: 700
+
   Plugin = (element, options) ->
     @options = $.extend({}, defaults, options)
     @$nav = $(element)
@@ -77,6 +79,7 @@
       # Resizing
       $(window).on "resize.tacky", =>
         @getDOMProperties()
+        @closeMenu()
         @getPositions()
         @scroll()
 
@@ -86,29 +89,7 @@
         self.scrollTo($(this).attr('href'))
 
       @$toggle_button.off('click.tacky').on 'click.tacky', => @toggleOpen()
-
-    toggleOpen: ->
-      openClass = @options.openClass
-      tackedClass = @options.tackedClass
-
-      if @$nav.hasClass(openClass)
-        @$nav.removeClass(openClass)
-      else
-        @$nav.addClass(openClass)
-
-        unless @$nav.hasClass(tackedClass)
-          $("html, body").stop().animate({scrollTop: @nav_position}, @options.scroll_speed, @options.scroll_easing)
-
-    scrollTo: (target_id) ->
-      position_index = $.inArray(target_id, @targets)
-      position = @positions[position_index] - @nav_height
-
-      if @$nav.hasClass(@options.openClass)
-        $("html, body").stop().animate({scrollTop: position}, 0)
-        @toggleOpen()
-      else
-        $("html, body").stop().animate({scrollTop: position}, @options.scroll_speed, @options.scroll_easing)
-
+      
     scroll: ->
       scroll_position = $(document).scrollTop()
       scroll_nav_position = $(document).scrollTop() + @nav_height
@@ -134,6 +115,30 @@
           @clearActiveMenuItem()
       else
         @toggleNav(false)
+
+    toggleOpen: ->
+      openClass = @options.openClass
+      tackedClass = @options.tackedClass
+
+      if @$nav.hasClass(openClass)
+        @$nav.removeClass(openClass)
+      else
+        if @$nav.hasClass(tackedClass)
+          @$nav.addClass(openClass)
+        else
+          speed = @options.scrollSpeed / 2
+          $("html, body").stop().animate({scrollTop: @nav_position + 1}, speed, @options.scroll_easing)
+          setTimeout (=> @$nav.addClass(openClass)), speed
+
+    scrollTo: (target_id) ->
+      position_index = $.inArray(target_id, @targets)
+      position = @positions[position_index] - @nav_height
+
+      if @$nav.hasClass(@options.openClass)
+        $("html, body").stop().animate({scrollTop: position}, 0)
+        @toggleOpen()
+      else
+        $("html, body").stop().animate({scrollTop: position}, @options.scrollSpeed, @options.scroll_easing)
         
     toggleNav: (stick) ->
       if stick
@@ -153,6 +158,16 @@
     clearActiveMenuItem: ->
       active_class = @options.activeClass
       @$nav.find('.'+active_class).removeClass(active_class)
+
+    closeMenu: ->
+      closeMenuSize = @options.closeMenuSize
+
+      if closeMenuSize >= 0
+        document_width = $(document).width()
+
+        if document_width >= closeMenuSize
+          @$nav.removeClass(@options.openClass)
+
 
   # ----------------------------------------------------------------------
   # ------------------------ Dirty Initialization ------------------------

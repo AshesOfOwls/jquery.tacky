@@ -12,7 +12,8 @@
       toggleClass: 'toggle',
       openClass: 'open',
       scrollSpeed: 500,
-      scrollEasing: ''
+      scrollEasing: '',
+      closeMenuSize: 700
     };
     Plugin = function(element, options) {
       var _this = this;
@@ -68,6 +69,7 @@
         });
         $(window).on("resize.tacky", function() {
           _this.getDOMProperties();
+          _this.closeMenu();
           _this.getPositions();
           return _this.scroll();
         });
@@ -79,36 +81,6 @@
         return this.$toggle_button.off('click.tacky').on('click.tacky', function() {
           return _this.toggleOpen();
         });
-      },
-      toggleOpen: function() {
-        var openClass, tackedClass;
-        openClass = this.options.openClass;
-        tackedClass = this.options.tackedClass;
-        if (this.$nav.hasClass(openClass)) {
-          return this.$nav.removeClass(openClass);
-        } else {
-          this.$nav.addClass(openClass);
-          if (!this.$nav.hasClass(tackedClass)) {
-            return $("html, body").stop().animate({
-              scrollTop: this.nav_position
-            }, this.options.scroll_speed, this.options.scroll_easing);
-          }
-        }
-      },
-      scrollTo: function(target_id) {
-        var position, position_index;
-        position_index = $.inArray(target_id, this.targets);
-        position = this.positions[position_index] - this.nav_height;
-        if (this.$nav.hasClass(this.options.openClass)) {
-          $("html, body").stop().animate({
-            scrollTop: position
-          }, 0);
-          return this.toggleOpen();
-        } else {
-          return $("html, body").stop().animate({
-            scrollTop: position
-          }, this.options.scroll_speed, this.options.scroll_easing);
-        }
       },
       scroll: function() {
         var active_i, i, pos, scroll_mid_position, scroll_nav_position, scroll_percent, scroll_position, scroll_total, _i, _len, _ref;
@@ -139,6 +111,42 @@
           return this.toggleNav(false);
         }
       },
+      toggleOpen: function() {
+        var openClass, speed, tackedClass,
+          _this = this;
+        openClass = this.options.openClass;
+        tackedClass = this.options.tackedClass;
+        if (this.$nav.hasClass(openClass)) {
+          return this.$nav.removeClass(openClass);
+        } else {
+          if (this.$nav.hasClass(tackedClass)) {
+            return this.$nav.addClass(openClass);
+          } else {
+            speed = this.options.scrollSpeed / 2;
+            $("html, body").stop().animate({
+              scrollTop: this.nav_position + 1
+            }, speed, this.options.scroll_easing);
+            return setTimeout((function() {
+              return _this.$nav.addClass(openClass);
+            }), speed);
+          }
+        }
+      },
+      scrollTo: function(target_id) {
+        var position, position_index;
+        position_index = $.inArray(target_id, this.targets);
+        position = this.positions[position_index] - this.nav_height;
+        if (this.$nav.hasClass(this.options.openClass)) {
+          $("html, body").stop().animate({
+            scrollTop: position
+          }, 0);
+          return this.toggleOpen();
+        } else {
+          return $("html, body").stop().animate({
+            scrollTop: position
+          }, this.options.scrollSpeed, this.options.scroll_easing);
+        }
+      },
       toggleNav: function(stick) {
         if (stick) {
           return this.$nav.addClass(this.options.tackedClass);
@@ -160,6 +168,16 @@
         var active_class;
         active_class = this.options.activeClass;
         return this.$nav.find('.' + active_class).removeClass(active_class);
+      },
+      closeMenu: function() {
+        var closeMenuSize, document_width;
+        closeMenuSize = this.options.closeMenuSize;
+        if (closeMenuSize >= 0) {
+          document_width = $(document).width();
+          if (document_width >= closeMenuSize) {
+            return this.$nav.removeClass(this.options.openClass);
+          }
+        }
       }
     };
     return $.fn[pluginName] = function(options) {

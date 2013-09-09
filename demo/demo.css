@@ -71,7 +71,7 @@ nav li a small {
 /* ------ Mobile Navigation ------ */
 /* ------------------------------- */
 
-@media(max-width: 699px) {
+@media(max-width: 700px) {
   nav {
     height: 70px;
     transition: .25s height;
