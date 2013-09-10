@@ -13,7 +13,8 @@
       openClass: 'open',
       scrollSpeed: 500,
       scrollEasing: '',
-      closeMenuSize: 700
+      closeMenuSize: 700,
+      markerOffset: .5
     };
     Plugin = function(element, options) {
       var _this = this;
@@ -81,23 +82,23 @@
         });
       },
       scroll: function() {
-        var active_i, i, pos, scroll_mid_position, scroll_nav_position, scroll_percent, scroll_position, scroll_total, _i, _len, _ref;
+        var active_i, i, pos, scroll_marker_position, scroll_nav_position, scroll_percent, scroll_position, scroll_total, _i, _len, _ref;
         scroll_position = $(document).scrollTop();
         scroll_nav_position = $(document).scrollTop() + this.nav_height;
-        scroll_mid_position = scroll_position + (this.window_height / 2);
+        scroll_marker_position = scroll_position + (this.window_height * this.options.markerOffset);
         if (scroll_position >= this.nav_position) {
           this.toggleNav(true);
           if (scroll_nav_position >= this.positions[0]) {
             scroll_total = this.document_height - this.window_height;
             scroll_percent = scroll_position / scroll_total;
             if (scroll_percent >= .99) {
-              scroll_mid_position += this.window_height;
+              scroll_marker_position += this.window_height;
             }
             active_i = null;
             _ref = this.positions;
             for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
               pos = _ref[i];
-              if (scroll_mid_position >= pos) {
+              if (scroll_marker_position >= pos) {
                 active_i = i;
               }
             }
