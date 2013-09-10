@@ -51,14 +51,13 @@
       @nav_height = @$nav.outerHeight()
 
       # Get the navigation position
-      unless @nav_position >= 0
-        tackedClass = @options.tackedClass
-        if !@$nav.hasClass(tackedClass)
-          @nav_position = @$nav.offset().top
-        else
-          @$nav.removeClass(tackedClass)
-          @nav_position = @$nav.offset().top
-          @$nav.addClass(tackedClass)
+      tackedClass = @options.tackedClass
+      if !@$nav.hasClass(tackedClass)
+        @nav_position = @$nav.offset().top
+      else
+        @$nav.removeClass(tackedClass)
+        @nav_position = @$nav.offset().top
+        @$nav.addClass(tackedClass)
 
     # Get the links and determine the target panes from them
     getTargets: ->

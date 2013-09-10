@@ -37,15 +37,13 @@
         this.document_height = $(document).height();
         this.window_height = $(window).height();
         this.nav_height = this.$nav.outerHeight();
-        if (!(this.nav_position >= 0)) {
-          tackedClass = this.options.tackedClass;
-          if (!this.$nav.hasClass(tackedClass)) {
-            return this.nav_position = this.$nav.offset().top;
-          } else {
-            this.$nav.removeClass(tackedClass);
-            this.nav_position = this.$nav.offset().top;
-            return this.$nav.addClass(tackedClass);
-          }
+        tackedClass = this.options.tackedClass;
+        if (!this.$nav.hasClass(tackedClass)) {
+          return this.nav_position = this.$nav.offset().top;
+        } else {
+          this.$nav.removeClass(tackedClass);
+          this.nav_position = this.$nav.offset().top;
+          return this.$nav.addClass(tackedClass);
         }
       },
       getTargets: function() {
