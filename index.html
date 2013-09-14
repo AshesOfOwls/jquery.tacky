@@ -4,13 +4,18 @@
   <meta charset="UTF-8">
   <title>jQuery Tacky</title>
 
+  <!-- Template -->
+  <link href='http://fonts.googleapis.com/css?family=Allura|Handlee|Actor' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="demo/template/css/reset.css">
+  <link rel="stylesheet" href="demo/template/vendor/font-awesome/font-awesome.min.css">
+  <link rel="stylesheet" href="demo/template/vendor/font-awesome/font-awesome-ie7.min.css">
+  <link rel="stylesheet" href="demo/template/css/template.css">
+
   <!-- jQuery Assets -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 
   <!-- Other Assets -->
-  <link rel="stylesheet" href="demo/vendor/font-awesome/font-awesome.min.css">
-  <link rel="stylesheet" href="demo/vendor/font-awesome/font-awesome-ie7.min.css">
 
   <!-- Demo Assets -->
   <link rel="stylesheet" href="demo/demo.css">
@@ -27,62 +32,55 @@
   </script>
 </head>
 <body>
-  <h1>jQuery.Tacky</h1>
+  <a href="https://github.com/you" class="forkme">
+    <img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+  </a>
+
+  <header>
+    <div class="container">
+      <h1>jQuery.Tacky</h1>
+      <p class="tagline">Take your nav and stick it up your page.</p>
+    </div>
+  </header>
 
   <nav>
-    <div class="toggle"><i class="icon-align-justify"></i></div>
-    <ul>
-      <li>
-        <a href="#first">
-          First Pane
-          <small>href='#first'</small>
-        </a>
-      </li>
-      <li>
-        <a href="#second">
-          Second Pane
-          <small>href='#second'</small>
-        </a>
-      </li>
-      <li>
-        <a href="#third">
-          Third Pane
-          <small>href='#third'</small>
-        </a>
-      </li>
-      <li>
-        <a href="#fourth">
-          Fourth Pane
-          <small>href='#fourth'</small>
-        </a>
-      </li>
+    <div class="toggle">
+      <i class="icon-align-justify"></i>
+      <i class="icon-remove"></i>
+    </div>
+
+    <ul class="container">
+      <li><a href="#simple">Semantic</a></li>
+      <li><a href="#customizable">Customizable</a></li>
+      <li><a href="#open_source">Open Source</a></li>
+      <li><a href="#getting_started">Getting Started</a></li>
     </ul>
   </nav>
 
   <ul class="panes">
-    <li id="first">
-      <h3>
-        First Pane
-        <small>id="first"</small>
-      </h3>
+    <li id="simple">
+      <div class="container">
+        <h3>Semantic</h3>
+        <p>No extra markup needed. Tacky uses anchor links which gracefully degrade.</p>
+        <iframe width="100%" height="192" src="http://jsfiddle.net/McPants/kM9Kq/embedded/html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+      </div>
     </li>
-    <li id="second">
-      <h3>
-        Second Pane
-        <small>id="second"</small>
-      </h3>
+    <li id="customizable">
+      <div class="container">
+        <h3>Customizable</h3>
+        <p>Style the navigation however you want, use media queries to mobilize it.</p>
+      </div>
     </li>
-    <li id="third">
-      <h3>
-        Third Pane
-        <small>id="third"</small>
-      </h3>
+    <li id="open_source">
+      <div class="container">
+        <h3>Open Source</h3>
+        <p>Lacking a feature you want? Let us know or fork it yourself. MIT Licensed.</p>
+      </div>
     </li>
-    <li id="fourth">
-      <h3>
-        Fourth Pane
-        <small>id="fourth"</small>
-      </h3>
+    <li id="getting_started">
+      <div class="container">
+        <h3>Getting Started</h3>
+      </div>
     </li>
   </ul>
 </body>

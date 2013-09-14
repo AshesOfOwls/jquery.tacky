@@ -14,7 +14,7 @@
       scrollSpeed: 500,
       scrollEasing: '',
       closeMenuSize: 700,
-      markerOffset: .5
+      markerOffset: .3
     };
     Plugin = function(element, options) {
       var _this = this;
@@ -28,89 +28,138 @@
     };
     Plugin.prototype = {
       init: function() {
-        this.getDOMProperties();
-        this.getTargets();
-        this.getPositions();
-        return this.createEvents();
+        this._getDOMProperties();
+        this._getPositions();
+        return this._createEvents();
       },
-      getDOMProperties: function() {
-        var tackedClass;
+      _getDOMProperties: function() {
+        this._getElementSizes();
+        return this._getNavOrigin();
+      },
+      _getElementSizes: function() {
         this.document_height = $(document).height();
         this.window_height = $(window).height();
-        this.nav_height = this.$nav.outerHeight();
+        this.marker_offset = this.window_height * this.options.markerOffset;
+        return this.nav_height = this.$nav.height();
+      },
+      _getNavOrigin: function() {
+        var tackedClass;
         tackedClass = this.options.tackedClass;
-        if (!this.$nav.hasClass(tackedClass)) {
-          return this.nav_position = this.$nav.offset().top;
-        } else {
+        if (this.$nav.hasClass(tackedClass)) {
+          if (this.$clone) {
+            this.$clone.hide();
+          }
           this.$nav.removeClass(tackedClass);
-          this.nav_position = this.$nav.offset().top;
-          return this.$nav.addClass(tackedClass);
+          this.nav_origin = this.$nav.offset().top;
+          this.$nav.addClass(tackedClass);
+          if (this.$clone) {
+            return this.$clone.show();
+          }
+        } else {
+          return this.nav_origin = this.$nav.offset().top;
         }
       },
-      getTargets: function() {
+      _getPositions: function() {
+        var _this = this;
         this.links = this.$nav.find(this.options.itemSelector);
-        return this.targets = this.links.map(function() {
+        this.targets = this.links.map(function() {
           return $(this).attr('href');
         });
-      },
-      getPositions: function() {
-        var _this = this;
         this.positions = [];
         return this.targets.each(function(i, target) {
-          return _this.positions.push($(target).offset().top);
+          return _this.positions.push($(target).offset().top + 1);
         });
       },
-      createEvents: function() {
+      _createEvents: function() {
         var self,
           _this = this;
-        $(document).on("scroll.tacky", function() {
-          return _this.scroll();
+        $(document).off('scroll.tacky').on("scroll.tacky", function() {
+          return _this._scroll();
         });
-        $(window).on("resize.tacky", function() {
-          _this.getDOMProperties();
-          _this.closeMenu();
-          _this.getPositions();
-          return _this.scroll();
+        $(window).off('scroll.tacky').on("resize.tacky", function() {
+          return _this._resize();
         });
         self = this;
         this.links.off('click.tacky').on("click.tacky", function(evt, i) {
           evt.preventDefault();
-          return self.scrollTo($(this).attr('href'));
+          return self._scrollToTarget($(this).attr('href'));
         });
         return this.$toggle_button.off('click.tacky').on('click.tacky', function() {
-          return _this.toggleOpen();
+          return _this._toggleOpen();
         });
       },
-      scroll: function() {
-        var active_i, i, pos, scroll_marker_position, scroll_nav_position, scroll_percent, scroll_position, scroll_total, _i, _len, _ref;
+      _scroll: function() {
+        var active_i, i, marker_position, nav_position, pos, scroll_position, _i, _len, _ref;
         scroll_position = $(document).scrollTop();
-        scroll_nav_position = $(document).scrollTop() + this.nav_height;
-        scroll_marker_position = scroll_position + (this.window_height * this.options.markerOffset);
-        if (scroll_position >= this.nav_position) {
-          this.toggleNav(true);
-          if (scroll_nav_position >= this.positions[0]) {
-            scroll_total = this.document_height - this.window_height;
-            scroll_percent = scroll_position / scroll_total;
-            if (scroll_percent >= .99) {
-              scroll_marker_position += this.window_height;
+        active_i = null;
+        if (scroll_position > this.nav_origin) {
+          this._tackNav(true);
+          nav_position = scroll_position + this.nav_height;
+          if (nav_position >= this.positions[0] - 1) {
+            marker_position = scroll_position + this.marker_offset;
+            if (scroll_position + this.window_height === this.document_height) {
+              marker_position = this.document_height;
             }
-            active_i = null;
             _ref = this.positions;
             for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
               pos = _ref[i];
-              if (scroll_marker_position >= pos) {
+              if (marker_position >= pos) {
                 active_i = i;
               }
             }
-            return this.setActiveMenuItem(active_i);
-          } else {
-            return this.clearActiveMenuItem();
           }
         } else {
-          return this.toggleNav(false);
+          this._tackNav(false);
+        }
+        return this._setActive(active_i);
+      },
+      _tackNav: function(tacked) {
+        if (tacked) {
+          if (this.$nav.css('position') === 'static') {
+            this.$clone = this.$nav.clone(false).insertBefore(this.$nav).css({
+              visibility: 0
+            });
+          }
+          return this.$nav.addClass(this.options.tackedClass);
+        } else {
+          if (this.$clone) {
+            this.$clone.remove();
+          }
+          return this.$nav.removeClass(this.options.tackedClass);
         }
       },
-      toggleOpen: function() {
+      _setActive: function(i) {
+        var $active_item;
+        this._clearActive();
+        if (i !== null) {
+          $active_item = this.links.eq(i);
+          return $active_item.parent().addClass(this.options.activeClass);
+        }
+      },
+      _clearActive: function() {
+        var active_class;
+        active_class = this.options.activeClass;
+        return this.$nav.find('.' + active_class).removeClass(active_class);
+      },
+      _resize: function() {
+        this._getDOMProperties();
+        this._getPositions();
+        this._scroll();
+        return this._detoggle();
+      },
+      _scrollToTarget: function(target_id) {
+        var position, position_index, scroll_speed;
+        position_index = $.inArray(target_id, this.targets);
+        position = this.positions[position_index] - this.nav_height;
+        scroll_speed = this.$nav.hasClass(this.options.openClass) ? 0 : this.options.scrollSpeed;
+        return this._scrollTo(position, scroll_speed);
+      },
+      _scrollTo: function(position, speed) {
+        return $("html, body").stop().animate({
+          scrollTop: position
+        }, speed, this.options.scrollEasing);
+      },
+      _toggleOpen: function() {
         var openClass, speed, tackedClass,
           _this = this;
         openClass = this.options.openClass;
@@ -122,53 +171,14 @@
             return this.$nav.addClass(openClass);
           } else {
             speed = this.options.scrollSpeed / 2;
-            $("html, body").stop().animate({
-              scrollTop: this.nav_position + 1
-            }, speed, this.options.scroll_easing);
+            this._scrollTo(this.nav_position, speed);
             return setTimeout((function() {
               return _this.$nav.addClass(openClass);
             }), speed);
           }
         }
       },
-      scrollTo: function(target_id) {
-        var position, position_index;
-        position_index = $.inArray(target_id, this.targets);
-        position = this.positions[position_index] - this.nav_height;
-        if (this.$nav.hasClass(this.options.openClass)) {
-          $("html, body").stop().animate({
-            scrollTop: position
-          }, 0);
-          return this.toggleOpen();
-        } else {
-          return $("html, body").stop().animate({
-            scrollTop: position
-          }, this.options.scrollSpeed, this.options.scroll_easing);
-        }
-      },
-      toggleNav: function(stick) {
-        if (stick) {
-          return this.$nav.addClass(this.options.tackedClass);
-        } else {
-          this.$nav.removeClass(this.options.tackedClass);
-          return this.clearActiveMenuItem();
-        }
-      },
-      setActiveMenuItem: function(i) {
-        var $active_item, active_class;
-        this.clearActiveMenuItem();
-        if (i >= 0) {
-          active_class = this.options.activeClass;
-          $active_item = this.links.eq(i);
-          return $active_item.parent().addClass(active_class);
-        }
-      },
-      clearActiveMenuItem: function() {
-        var active_class;
-        active_class = this.options.activeClass;
-        return this.$nav.find('.' + active_class).removeClass(active_class);
-      },
-      closeMenu: function() {
+      _detoggle: function() {
         var closeMenuSize, document_width;
         closeMenuSize = this.options.closeMenuSize;
         if (closeMenuSize >= 0) {

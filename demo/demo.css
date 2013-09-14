@@ -1,35 +1,11 @@
-html, body {
-  background: rgb(136, 214, 238);
-  height: 100%;
-  font-family: Helvetica, Arial, Verdana, sans-serif;
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-h1 {
-  font-size: 34px;
-  font-weight: normal;
-  padding: 10px 30px;
-}
-
-small {
-  display: block;
-}
-
 /* ------------------------------- */
 /* ------ Normal Navigation ------ */
 /* ------------------------------- */
 nav {
-  background: rgb(79, 104, 121);
+  background: rgb(49, 51, 53);
   color: #FFF;
   height: 70px;
-  position: absolute;
+  transition: .25s height;
   width: 100%;
 }
 
@@ -38,13 +14,12 @@ nav.tacked {
   top: 0;
 }
 
-nav .toggle {
-  display: none;
+nav * {
+  line-height: 70px;
 }
 
-nav ul {
-  margin: 0;
-  padding: 0;
+nav .toggle {
+  display: none;
 }
 
 nav li {
@@ -53,33 +28,36 @@ nav li {
 }
 
 nav li.active, nav li:hover:not(.toggle) {
-  background: rgba(159, 182, 223, .5);
+  background: rgba(159, 182, 223, .4);
 }
 
 nav li a {
   display: block;
-  padding: 20px 30px;
+  padding: 0 8px;
 }
-
-nav li a small {
-  font-size: 10px;
-  font-family: verdana;
-}
-
 
 /* ------------------------------- */
 /* ------ Mobile Navigation ------ */
 /* ------------------------------- */
 
 @media(max-width: 700px) {
+  body, .forkme {
+    padding-top: 30px;
+  }
+
   nav {
-    height: 70px;
-    transition: .25s height;
+    height: 40px;
     overflow: hidden;
+    position: fixed;
+    top: 0;
   }
 
   nav.open {
     height: 100%;
+  }
+
+  nav * {
+    line-height: 40px;
   }
 
   nav .toggle {
@@ -87,15 +65,31 @@ nav li a small {
     display: block;
     float: right;
     font-size: 31px;
-    padding: 20px 30px;
+    padding: 0 30px;
   }
 
   nav .toggle:hover {
     color: #CCC;
   }
 
+  nav .toggle .icon-remove {
+    display: none;
+  }
+
+  nav.open .toggle .icon-remove {
+    display: block;
+    font-size: 34px;
+    margin-top: 0;
+    margin-right: 2px;
+  }
+
+  nav.open .toggle .icon-align-justify {
+    display: none;
+  }
+
   nav ul {
-    margin-top: 70px;
+    margin-top: 40px !important;
+    text-align: center;
   }
 
   nav li {
@@ -109,28 +103,12 @@ nav li a small {
 
 ul.panes {
   height: 100%;
-  margin-top: 150px;
   padding: 0;
 }
 
 ul.panes li {
-  background: rgba(0,0,0,.1);
-  border-top: 6px solid rgba(0,0,0,0.3);
+  border-top: 1px solid rgba(0,0,0,0.3);
   padding: 20px;
   display: block;
   height: 80%;
-}
-
-ul.panes li:hover {
-  background: transparent;
-}
-
-ul.panes li#fourth {
-  height: 200px;
-}
-
-ul.panes li h3 {
-  color: rgba(0,0,0,0.8);
-  font-size: 60px;
-  text-align: center;
 }

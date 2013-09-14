@@ -24,10 +24,11 @@
     scrollEasing: ''
 
     closeMenuSize: 700
-    markerOffset: .5
+    markerOffset: .3
 
   Plugin = (element, options) ->
     @options = $.extend({}, defaults, options)
+
     @$nav = $(element)
     @$toggle_button = @$nav.find("." + @options.toggleClass)
 
@@ -38,85 +39,112 @@
 
   Plugin:: =
     init: ->
-      @getDOMProperties()
-      @getTargets()
-      @getPositions()
-      @createEvents()
+      @_getDOMProperties()
+      @_getPositions()
+      @_createEvents()
 
-    # Get the heights and offsets for relevant elements
-    getDOMProperties: ->
+    _getDOMProperties: ->
+      @_getElementSizes()
+      @_getNavOrigin()
+
+    _getElementSizes: ->
       @document_height = $(document).height()
       @window_height = $(window).height()
+      @marker_offset = @window_height * @options.markerOffset
+      @nav_height = @$nav.height()
 
-      # Get the navigation height
-      @nav_height = @$nav.outerHeight()
-
-      # Get the navigation position
+    _getNavOrigin: ->
       tackedClass = @options.tackedClass
-      if !@$nav.hasClass(tackedClass)
-        @nav_position = @$nav.offset().top
-      else
-        @$nav.removeClass(tackedClass)
-        @nav_position = @$nav.offset().top
-        @$nav.addClass(tackedClass)
 
-    # Get the links and determine the target panes from them
-    getTargets: ->
+      if @$nav.hasClass(tackedClass)
+        @$clone.hide() if @$clone
+        @$nav.removeClass(tackedClass)
+        @nav_origin = @$nav.offset().top
+        @$nav.addClass(tackedClass)
+        @$clone.show() if @$clone
+      else
+        @nav_origin = @$nav.offset().top
+
+    _getPositions: ->
       @links = @$nav.find(@options.itemSelector)
       @targets = @links.map -> $(this).attr('href')
 
-    # Get a list of offsets for each pane
-    getPositions: ->
       @positions = []
-
       @targets.each (i, target) =>
-        @positions.push $(target).offset().top
+        @positions.push $(target).offset().top + 1
 
-    createEvents: ->
-      # Scrolling
-      $(document).on "scroll.tacky", => @scroll()
-
-      # Resizing
-      $(window).on "resize.tacky", =>
-        @getDOMProperties()
-        @closeMenu()
-        @getPositions()
-        @scroll()
+    _createEvents: ->
+      $(document).off('scroll.tacky').on "scroll.tacky", => @_scroll()
+      $(window).off('scroll.tacky').on "resize.tacky", => @_resize()
 
       self = @
       @links.off('click.tacky').on "click.tacky", (evt, i) ->
         evt.preventDefault()
-        self.scrollTo($(this).attr('href'))
+        self._scrollToTarget($(this).attr('href'))
 
-      @$toggle_button.off('click.tacky').on 'click.tacky', => @toggleOpen()
-      
-    scroll: ->
+      @$toggle_button.off('click.tacky').on 'click.tacky', => @_toggleOpen()
+
+    _scroll: ->
       scroll_position = $(document).scrollTop()
-      scroll_nav_position = $(document).scrollTop() + @nav_height
-      scroll_marker_position = scroll_position + (@window_height * @options.markerOffset)
-      
-      if scroll_position >= @nav_position
-        @toggleNav(true)
+      active_i = null
 
-        if scroll_nav_position >= @positions[0]
-          scroll_total = @document_height - @window_height
-          scroll_percent = scroll_position / scroll_total
+      if scroll_position > @nav_origin
+        @_tackNav(true)
 
-          if scroll_percent >= .99
-            scroll_marker_position += @window_height
+        nav_position = scroll_position + @nav_height
+        if nav_position >= @positions[0] - 1
+          marker_position = scroll_position + @marker_offset
 
-          active_i = null
+          if scroll_position + @window_height is @document_height
+            marker_position = @document_height
+
           for pos, i in @positions
-            if scroll_marker_position >= pos
+            if marker_position >= pos
               active_i = i
-
-          @setActiveMenuItem(active_i)
-        else
-          @clearActiveMenuItem()
       else
-        @toggleNav(false)
+        @_tackNav(false)
 
-    toggleOpen: ->
+      @_setActive(active_i)
+
+    _tackNav: (tacked) ->
+      if tacked
+        if @$nav.css('position') is 'static'
+          @$clone = @$nav.clone(false).insertBefore(@$nav).css({ visibility: 0 })
+
+        @$nav.addClass(@options.tackedClass)
+      else
+        @$clone.remove() if @$clone
+        @$nav.removeClass(@options.tackedClass)
+
+    _setActive: (i) ->
+      @_clearActive()
+
+      if i isnt null
+        $active_item = @links.eq(i)
+        $active_item.parent().addClass(@options.activeClass)
+
+    _clearActive: ->
+      active_class = @options.activeClass
+      @$nav.find('.'+active_class).removeClass(active_class)
+
+    _resize: ->
+      @_getDOMProperties() # Recalculate
+      @_getPositions() # Recalculate
+      @_scroll() # Trigger reset
+      @_detoggle()
+
+    _scrollToTarget: (target_id) ->
+      position_index = $.inArray(target_id, @targets)
+      position = @positions[position_index] - @nav_height
+
+      scroll_speed = if @$nav.hasClass(@options.openClass) then 0 else @options.scrollSpeed
+
+      @_scrollTo(position, scroll_speed)
+      
+    _scrollTo: (position, speed) ->
+      $("html, body").stop().animate({scrollTop: position}, speed, @options.scrollEasing)
+
+    _toggleOpen: ->
       openClass = @options.openClass
       tackedClass = @options.tackedClass
 
@@ -127,39 +155,10 @@
           @$nav.addClass(openClass)
         else
           speed = @options.scrollSpeed / 2
-          $("html, body").stop().animate({scrollTop: @nav_position + 1}, speed, @options.scroll_easing)
+          @_scrollTo(@nav_position, speed)
           setTimeout (=> @$nav.addClass(openClass)), speed
 
-    scrollTo: (target_id) ->
-      position_index = $.inArray(target_id, @targets)
-      position = @positions[position_index] - @nav_height
-
-      if @$nav.hasClass(@options.openClass)
-        $("html, body").stop().animate({scrollTop: position}, 0)
-        @toggleOpen()
-      else
-        $("html, body").stop().animate({scrollTop: position}, @options.scrollSpeed, @options.scroll_easing)
-        
-    toggleNav: (stick) ->
-      if stick
-        @$nav.addClass(@options.tackedClass)
-      else
-        @$nav.removeClass(@options.tackedClass)
-        @clearActiveMenuItem()
-
-    setActiveMenuItem: (i) ->
-      @clearActiveMenuItem()
-
-      if i >= 0
-        active_class = @options.activeClass
-        $active_item = @links.eq(i)
-        $active_item.parent().addClass(active_class)
-
-    clearActiveMenuItem: ->
-      active_class = @options.activeClass
-      @$nav.find('.'+active_class).removeClass(active_class)
-
-    closeMenu: ->
+    _detoggle: ->
       closeMenuSize = @options.closeMenuSize
 
       if closeMenuSize >= 0
