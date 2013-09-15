@@ -14,6 +14,7 @@
   defaults = 
     itemSelector: 'a'
     parentSelector: null
+    floating: false
 
     tackedClass: 'tacked'
     activeClass: 'active'
@@ -143,7 +144,8 @@
 
     _scrollToTarget: (target_id) ->
       position_index = $.inArray(target_id, @targets)
-      position = @positions[position_index] - @nav_height
+      position = @positions[position_index]
+      position -= @nav_height unless @options.floating
 
       scroll_speed = if @$nav.hasClass(@options.openClass) then 0 else @options.scrollSpeed
 

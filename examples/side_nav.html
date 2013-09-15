@@ -2,30 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>jQuery.Tacky - Basic Demo</title>
+  <title>jQuery.Tacky - Side Nav Demo</title>
 
   <!-- jQuery Assets -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
   <!-- Template -->
   <link rel="stylesheet" href="template/reset.css">
-  <link rel="stylesheet" href="template/basic.css">
+  <link rel="stylesheet" href="template/side_nav.css">
 
   <!-- Core Tacky -->
   <script src="../core/jquery.tacky.js"></script>
 
   <script>
     $(function() {
-      $('nav').tacky()
+      $('nav').tacky({
+        parentSelector: 'li',
+        floating: true
+      })
     })
   </script>
 </head>
 <body id="basic">
-  <h1>Basic Demo</h1>
+  <h1>Side Nav Demo</h1>
   <nav>
-    <a href="#first">First</a>
-    <a href="#second">Second</a>
-    <a href="#third">Third</a>
+    <ul>
+      <li><a href="#first">First</a></li>
+      <li><a href="#second">Second</a></li>
+      <li><a href="#third">Third</a></li>
+    </ul>
   </nav>
 
   <ul class="panes">

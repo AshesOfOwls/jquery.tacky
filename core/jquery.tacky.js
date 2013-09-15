@@ -7,6 +7,7 @@
     defaults = {
       itemSelector: 'a',
       parentSelector: null,
+      floating: false,
       tackedClass: 'tacked',
       activeClass: 'active',
       toggleClass: 'toggle',
@@ -160,7 +161,10 @@
       _scrollToTarget: function(target_id) {
         var position, position_index, scroll_speed;
         position_index = $.inArray(target_id, this.targets);
-        position = this.positions[position_index] - this.nav_height;
+        position = this.positions[position_index];
+        if (!this.options.floating) {
+          position -= this.nav_height;
+        }
         scroll_speed = this.$nav.hasClass(this.options.openClass) ? 0 : this.options.scrollSpeed;
         return this._scrollTo(position, scroll_speed);
       },

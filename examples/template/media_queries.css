@@ -1,0 +1,104 @@
+/* Page Layout */
+h1 {
+  font-size: 20px;
+}
+
+h1, p {
+  margin: 1em;
+}
+
+/* ------ Navigation ------ */
+nav {
+  background: black;
+  color: #FFF;
+  height: 70px;
+  line-height: 70px;
+  transition: .25s all;
+  width: 100%;
+}
+
+nav.tacked {
+  position: fixed;
+  top: 0;
+}
+
+nav .toggle {
+  display: none;
+}
+
+nav li {
+  display: inline-block;
+}
+
+nav a {
+  color: white;
+  display: block;
+  padding: 0 28px;
+  text-decoration: none;
+}
+
+nav li.active, nav li:hover {
+  background: rgba(159, 182, 223, .4);
+}
+
+/* ------ Mobile Navigation ------ */
+@media(max-width: 700px) {
+  body {
+    padding-top: 40px;
+  }
+
+  nav {
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+  }
+
+  nav.open {
+    height: 100%;
+  }
+
+  nav .toggle {
+    cursor: pointer;
+    display: block;
+    float: right;
+    font-size: 31px;
+    padding: 0 30px;
+  }
+
+  nav .toggle:hover {
+    color: #CCC;
+  }
+
+  nav .toggle .icon-remove {
+    display: none;
+  }
+
+  nav.open .toggle .icon-remove {
+    display: block;
+    font-size: 34px;
+    margin-top: 0;
+    margin-right: 2px;
+  }
+
+  nav.open .toggle .icon-align-justify {
+    display: none;
+  }
+
+  nav ul {
+    margin-top: 40px !important;
+    text-align: center;
+  }
+
+  nav li {
+    display: block;
+  }
+}
+
+/* ------ Panes ------ */
+.panes li {
+  border-bottom: 1px solid grey;
+  height: 450px;
+  padding: 1em;
+}
