@@ -24,7 +24,7 @@
     scrollEasing: ''
 
     closeMenuSize: 700
-    markerOffset: .3
+    markerOffset: .4
 
   Plugin = (element, options) ->
     @options = $.extend({}, defaults, options)
@@ -104,7 +104,7 @@
       else
         @_tackNav(false)
 
-      @_setActive(active_i)
+      @_setActive(active_i) if active_i isnt null
 
     _tackNav: (tacked) ->
       if tacked
@@ -113,17 +113,25 @@
 
         @$nav.addClass(@options.tackedClass)
       else
+        @_clearActive()
         @$clone.remove() if @$clone
         @$nav.removeClass(@options.tackedClass)
 
     _setActive: (i) ->
-      @_clearActive()
+      if i isnt @active_i
+        @_clearActive()
 
-      if i isnt null
+        @active_i = i
         $active_item = @links.eq(i)
-        $active_item.parent().addClass(@options.activeClass)
+        parentSelector = @options.parentSelector
+
+        if parentSelector
+          $active_item.closest(parentSelector).addClass(@options.activeClass)
+        else
+          $active_item.addClass(@options.activeClass)
 
     _clearActive: ->
+      @active_i = null
       active_class = @options.activeClass
       @$nav.find('.'+active_class).removeClass(active_class)
 

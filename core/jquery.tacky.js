@@ -14,7 +14,7 @@
       scrollSpeed: 500,
       scrollEasing: '',
       closeMenuSize: 700,
-      markerOffset: .3
+      markerOffset: .4
     };
     Plugin = function(element, options) {
       var _this = this;
@@ -111,7 +111,9 @@
         } else {
           this._tackNav(false);
         }
-        return this._setActive(active_i);
+        if (active_i !== null) {
+          return this._setActive(active_i);
+        }
       },
       _tackNav: function(tacked) {
         if (tacked) {
@@ -122,6 +124,7 @@
           }
           return this.$nav.addClass(this.options.tackedClass);
         } else {
+          this._clearActive();
           if (this.$clone) {
             this.$clone.remove();
           }
@@ -129,15 +132,22 @@
         }
       },
       _setActive: function(i) {
-        var $active_item;
-        this._clearActive();
-        if (i !== null) {
+        var $active_item, parentSelector;
+        if (i !== this.active_i) {
+          this._clearActive();
+          this.active_i = i;
           $active_item = this.links.eq(i);
-          return $active_item.parent().addClass(this.options.activeClass);
+          parentSelector = this.options.parentSelector;
+          if (parentSelector) {
+            return $active_item.closest(parentSelector).addClass(this.options.activeClass);
+          } else {
+            return $active_item.addClass(this.options.activeClass);
+          }
         }
       },
       _clearActive: function() {
         var active_class;
+        this.active_i = null;
         active_class = this.options.activeClass;
         return this.$nav.find('.' + active_class).removeClass(active_class);
       },
