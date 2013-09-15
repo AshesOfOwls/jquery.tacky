@@ -1,0 +1,41 @@
+/* Page Layout */
+h1 {
+  font-size: 20px;
+  margin: 1em;
+}
+
+/* ------ Navigation ------ */
+nav {
+  background: black;
+  color: #FFF;
+  height: 70px;
+  line-height: 70px;
+  width: 100%;
+}
+
+nav.tacked {
+  position: fixed;
+  top: 0;
+}
+
+nav li {
+  display: inline-block;
+}
+
+nav a {
+  color: white;
+  display: block;
+  padding: 0 28px;
+  text-decoration: none;
+}
+
+nav li.active, nav li:hover {
+  background: rgba(159, 182, 223, .4);
+}
+
+/* ------ Panes ------ */
+.panes li {
+  border-bottom: 1px solid grey;
+  height: 450px;
+  padding: 1em;
+}

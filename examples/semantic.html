@@ -2,30 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>jQuery.Tacky - Baisc Demo</title>
+  <title>jQuery.Tacky - Semantic Demo</title>
 
   <!-- jQuery Assets -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
   <!-- Template -->
   <link rel="stylesheet" href="template/reset.css">
-  <link rel="stylesheet" href="template/basic.css">
+  <link rel="stylesheet" href="template/semantic.css">
 
   <!-- Core Tacky -->
   <script src="../core/jquery.tacky.js"></script>
 
   <script>
     $(function() {
-      $('nav').tacky()
+      $('nav').tacky({
+        parentSelector: 'li'
+      })
     })
   </script>
 </head>
 <body id="basic">
-  <h1>Basic Demo</h1>
+  <h1>Semantic Demo</h1>
   <nav>
-    <a href="#first">First</a>
-    <a href="#second">Second</a>
-    <a href="#third">Third</a>
+    <ul>
+      <li><a href="#first">First</a></li>
+      <li><a href="#second">Second</a></li>
+      <li><a href="#third">Third</a></li>
+    </ul>
   </nav>
 
   <ul class="panes">
