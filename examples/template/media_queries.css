@@ -60,11 +60,14 @@ nav li.active, nav li:hover {
   }
 
   nav .toggle {
+    background: url('toggle.png') no-repeat center center;
     cursor: pointer;
     display: block;
+    height: 40px;
     float: right;
     font-size: 31px;
-    padding: 0 30px;
+    padding: 0 5px;
+    width: 40px;
   }
 
   nav .toggle:hover {

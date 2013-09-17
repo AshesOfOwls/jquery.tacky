@@ -159,14 +159,18 @@
         return this._detoggle();
       },
       _scrollToTarget: function(target_id) {
-        var position, position_index, scroll_speed;
+        var openClass, position, position_index, scroll_speed;
         position_index = $.inArray(target_id, this.targets);
         position = this.positions[position_index];
         if (!this.options.floating) {
           position -= this.nav_height;
         }
         scroll_speed = this.$nav.hasClass(this.options.openClass) ? 0 : this.options.scrollSpeed;
-        return this._scrollTo(position, scroll_speed);
+        this._scrollTo(position, scroll_speed);
+        openClass = this.options.openClass;
+        if (this.$nav.hasClass(openClass)) {
+          return this.$nav.removeClass(openClass);
+        }
       },
       _scrollTo: function(position, speed) {
         return $("html, body").stop().animate({
@@ -174,22 +178,13 @@
         }, speed, this.options.scrollEasing);
       },
       _toggleOpen: function() {
-        var openClass, speed, tackedClass,
-          _this = this;
+        var openClass, tackedClass;
         openClass = this.options.openClass;
         tackedClass = this.options.tackedClass;
         if (this.$nav.hasClass(openClass)) {
           return this.$nav.removeClass(openClass);
         } else {
-          if (this.$nav.hasClass(tackedClass)) {
-            return this.$nav.addClass(openClass);
-          } else {
-            speed = this.options.scrollSpeed / 2;
-            this._scrollTo(this.nav_position, speed);
-            return setTimeout((function() {
-              return _this.$nav.addClass(openClass);
-            }), speed);
-          }
+          return this.$nav.addClass(openClass);
         }
       },
       _detoggle: function() {

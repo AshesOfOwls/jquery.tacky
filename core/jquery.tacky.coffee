@@ -150,6 +150,9 @@
       scroll_speed = if @$nav.hasClass(@options.openClass) then 0 else @options.scrollSpeed
 
       @_scrollTo(position, scroll_speed)
+
+      openClass = @options.openClass
+      @$nav.removeClass(openClass) if @$nav.hasClass(openClass)
       
     _scrollTo: (position, speed) ->
       $("html, body").stop().animate({scrollTop: position}, speed, @options.scrollEasing)
@@ -161,13 +164,8 @@
       if @$nav.hasClass(openClass)
         @$nav.removeClass(openClass)
       else
-        if @$nav.hasClass(tackedClass)
-          @$nav.addClass(openClass)
-        else
-          speed = @options.scrollSpeed / 2
-          @_scrollTo(@nav_position, speed)
-          setTimeout (=> @$nav.addClass(openClass)), speed
-
+        @$nav.addClass(openClass)
+        
     _detoggle: ->
       closeMenuSize = @options.closeMenuSize
 
