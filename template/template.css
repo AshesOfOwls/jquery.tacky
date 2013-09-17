@@ -1,0 +1,60 @@
+html, body {
+  background: rgb(255, 252, 252);
+  font-family: 'Actor', Helvetica, Arial, Verdana, sans-serif;
+  line-height: 180%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+small {
+  display: block;
+}
+
+.forkme {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.container {
+  height: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+header {
+  text-align: center;
+  padding: 40px 0;
+}
+
+header h1 {
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-family: 'Allura', cursive;
+}
+
+h1,h2,h3 {
+  margin: .3em 0 .8em;
+}
+
+h4,h5,h6 {
+  margin: 1.3em 0 .8em;
+}
+
+h1 { font-size: 29px; }
+h2 { font-size: 26px; }
+h3 { font-size: 23px; }
+h4 { font-size: 20px; }
+h5 { font-size: 17px; }
+h6 { font-size: 14px; }
+
+p {
+  margin: 1em 0;
+}
