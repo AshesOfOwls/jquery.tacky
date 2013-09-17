@@ -25,10 +25,10 @@ Features
 Credits
 -------
 
-A big thanks to all of our [contributors](https://github.com/McPants/jquery.shapeshift/graphs/contributors)!
+A big thanks to all of our [contributors](https://github.com/McPants/jquery.tacky/graphs/contributors)!
 
 
-Sites Using Shapeshift
+Sites Using Tacky
 ----------------------
 
-Got a project that you are using shapeshift on? Let us know and we will happily throw a link to your page here!
+Got a project that you are using tacky on? Let us know and we will happily throw a link to your page here!
