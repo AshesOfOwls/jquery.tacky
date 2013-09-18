@@ -23,7 +23,7 @@
     floating: false
     scrollSpeed: 500
     scrollEasing: ''
-    closeMenuSize: 700
+    closeMenuWidth: 700
     markerOffset: .4
 
   Plugin = (element, options) ->
@@ -167,12 +167,12 @@
         @$nav.addClass(openClass)
         
     _detoggle: ->
-      closeMenuSize = @options.closeMenuSize
+      closeMenuWidth = @options.closeMenuWidth
 
-      if closeMenuSize >= 0
+      if closeMenuWidth >= 0
         document_width = $(document).width()
 
-        if document_width >= closeMenuSize
+        if document_width >= closeMenuWidth
           @$nav.removeClass(@options.openClass)
 
 
