@@ -14,16 +14,15 @@
   defaults = 
     itemSelector: 'a'
     parentSelector: null
-    floating: false
 
     tackedClass: 'tacked'
     activeClass: 'active'
     toggleClass: 'toggle'
     openClass: 'open'
     
+    floating: false
     scrollSpeed: 500
     scrollEasing: ''
-
     closeMenuSize: 700
     markerOffset: .4
 
