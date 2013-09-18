@@ -175,6 +175,12 @@
         if document_width >= closeMenuWidth
           @$nav.removeClass(@options.openClass)
 
+    destroy: ->
+      $(document).off('scroll.tacky')
+      $(window).off('scroll.tacky')
+      @links.off('click.tacky')
+      @$toggle_button.off('click.tacky')
+
 
   # ----------------------------------------------------------------------
   # ------------------------ Dirty Initialization ------------------------
