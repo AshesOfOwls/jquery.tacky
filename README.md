@@ -22,6 +22,11 @@ Features
   Tacky uses the MIT license and will forever be free to use, fork, and build upon.
 
 
+Documentation
+-------------
+Check out our [Wiki](https://github.com/McPants/jquery.tacky/wiki) for [full documentation](https://github.com/McPants/jquery.tacky/wiki/v1.0-Documentation).
+
+
 Credits
 -------
 
