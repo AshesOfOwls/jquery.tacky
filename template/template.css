@@ -13,6 +13,12 @@ small {
   display: block;
 }
 
+p small {
+  color: #888;
+  font-size: 13px;
+  line-height: 120%;
+}
+
 .forkme {
   position: absolute;
   top: 0;
@@ -24,6 +30,26 @@ small {
   max-width: 1024px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+.container:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+.split.first {
+  float: left;
+  margin-right: 2%;
+  width: 60%;
+}
+
+.split.second {
+  float: left;
+  width: 38%;
 }
 
 header {
