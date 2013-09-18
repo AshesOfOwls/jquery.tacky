@@ -22,6 +22,7 @@
       this.options = $.extend({}, defaults, options);
       this.$nav = $(element);
       this.$toggle_button = this.$nav.find("." + this.options.toggleClass);
+      this.options.itemSelector += '[href^="#"]';
       this.init();
       return setTimeout((function() {
         return _this.init();

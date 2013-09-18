@@ -32,6 +32,7 @@
 
     @$nav = $(element)
     @$toggle_button = @$nav.find("." + @options.toggleClass)
+    @options.itemSelector += '[href^="#"]'
 
     @init()
 
